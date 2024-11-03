@@ -6,20 +6,48 @@
 /*   By: teddybandama <teddybandama@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 14:22:37 by teddybandam       #+#    #+#             */
-/*   Updated: 2024/11/03 22:02:16 by teddybandam      ###   ########.fr       */
+/*   Updated: 2024/11/03 22:40:51 by teddybandam      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <fcntl.h>
 
+#include <stdlib.h>
+#include <unistd.h>
 
-static char *read_line(char *stash, int fd)
+static char *read_and_concatenate(int fd, char *stash) 
 {
     char *buff;
     int byte_read;
 
     byte_read = 1;
+    buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+    if (!buff) 
+    {
+        free(stash);
+        return NULL;
+    }
+    byte_read = read(fd, buff, BUFFER_SIZE);
+    if (byte_read < 0) 
+    {
+        free(buff);
+        free(stash);
+        return NULL; 
+    }
+    buff[byte_read] = '\0'; 
+    stash = ft_strjoin(stash, buff);
+    if (!stash) 
+    {
+        free(buff);
+        return NULL;
+    }
+    free(buff); 
+    return stash;
+}
+
+static char *read_line(char *stash, int fd)
+{
     if (stash == NULL)
     {
         stash = malloc(1);
@@ -27,36 +55,18 @@ static char *read_line(char *stash, int fd)
             return (NULL);
         stash[0] = '\0';
     }
-    buff = malloc(sizeof(char) * BUFFER_SIZE + 1);
-    if (!buff)
+    while (ft_strchr(stash, '\n') == NULL)
     {
-        free(stash);
-        return (NULL);
+        stash = read_and_concatenate(fd, stash);
+        if (!stash) 
+            return NULL;
+        if (stash[0] == '\0') 
+            break;
     }
-    // lecture jusqu'a qu'il trouve un '\n'
-    while (byte_read > 0 && ft_strchr(stash, '\n') == NULL)
-    {
-        byte_read = read(fd, buff, BUFFER_SIZE);
-        if (byte_read < 0)
-        {
-            free(buff);
-			free(stash);
-			return (NULL);
-        }
-        buff[byte_read] = '\0';
-        stash = ft_strjoin(stash, buff);
-        if (!stash)
-        {
-            free(buff);
-            return (NULL);
-        }
-    }
-    free(buff);
-    return (stash);
+    return stash;
 }
 
-// "debug je suis ici"
-char *extract_line(char *stash)
+static char *extract_line(char *stash)
 {
     char *line;
     int i;
@@ -66,7 +76,6 @@ char *extract_line(char *stash)
 
     if (!stash[i])
         return (NULL);
-    // ici debug
     while (stash[i] && stash[i] != '\n')
         i++;
     line_length = i;
@@ -76,14 +85,13 @@ char *extract_line(char *stash)
     return (line); 
 }
 
-char *extract_surplus_line(char *stash)
+static char *extract_surplus_line(char *stash)
 {
     char    *surplus_line;
     int i;
     int j;
 
     j = 0;
-
     if (!stash)
         return (NULL);
     i = 0;
