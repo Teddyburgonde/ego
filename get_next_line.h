@@ -6,7 +6,7 @@
 /*   By: teddybandama <teddybandama@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 14:28:29 by teddybandam       #+#    #+#             */
-/*   Updated: 2024/11/03 17:54:43 by teddybandam      ###   ########.fr       */
+/*   Updated: 2024/11/03 21:03:52 by teddybandam      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ char *get_next_line(int fd);
 int	ft_strlen(const char *str);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strchr(const char *s, int c);
+char	*ft_substr(char const *s, unsigned int start, int len);
 
 
 #endif 

@@ -6,7 +6,7 @@
 /*   By: teddybandama <teddybandama@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 14:35:08 by teddybandam       #+#    #+#             */
-/*   Updated: 2024/11/03 17:52:21 by teddybandam      ###   ########.fr       */
+/*   Updated: 2024/11/03 21:03:42 by teddybandam      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,31 @@ char	*ft_strchr(const char *s, int c)
 	if (s[i] == (char)c)
 		return ((char *)(&s[i]));
 	return (NULL);
+}
+
+char	*ft_substr(char const *s, unsigned int start, int len)
+{
+	int		i;
+	int		j;
+	char	*tab;
+
+	tab = NULL;
+	if (!s)
+		return (NULL);
+	if ((unsigned int)ft_strlen(s) < start)
+		return (NULL);
+	j = ft_strlen(s + start);
+	if (j < len)
+		len = j;
+	tab = malloc(sizeof(char) * (len + 1));
+	if (!tab)
+		return (NULL);
+	i = 0;
+	while (i < len)
+	{
+		tab[i] = s[start + i];
+		i++;
+	}
+	tab[i] = '\0';
+	return (tab);
 }
