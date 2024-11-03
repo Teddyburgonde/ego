@@ -6,7 +6,7 @@
 /*   By: teddybandama <teddybandama@student.42.f    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 14:22:37 by teddybandam       #+#    #+#             */
-/*   Updated: 2024/11/03 21:58:12 by teddybandam      ###   ########.fr       */
+/*   Updated: 2024/11/03 22:02:16 by teddybandam      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,11 @@ char *extract_line(char *stash)
 
 char *extract_surplus_line(char *stash)
 {
+    char    *surplus_line;
     int i;
     int j;
 
     j = 0;
-    char    *surplus_line;
 
     if (!stash)
         return (NULL);
@@ -91,7 +91,7 @@ char *extract_surplus_line(char *stash)
         i++;
     if (stash[i] != '\n')
         return (NULL);
-    surplus_line = malloc(sizeof(char) * (ft_strlen(stash) - i));
+    surplus_line = malloc(sizeof(char) * (ft_strlen(stash) - i + 1));
     if (!surplus_line)
         return (NULL);
     i++;
@@ -100,11 +100,6 @@ char *extract_surplus_line(char *stash)
         surplus_line[j] = stash[i]; 
         i++;
         j++;
-    }
-    if (stash[i] != '\n') 
-    {
-        free(stash);
-        return (NULL);
     }
     surplus_line[j] = '\0';
     free(stash);
