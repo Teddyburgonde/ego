@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teddybandama <teddybandama@student.42.f    +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 14:28:29 by teddybandam       #+#    #+#             */
-/*   Updated: 2024/11/03 23:42:40 by teddybandam      ###   ########.fr       */
+/*   Updated: 2024/11/04 18:48:04 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,10 @@
 # define GET_NEXT_LINE_H
 # include <unistd.h>
 # include <stdlib.h>
-# define BUFFER_SIZE 5
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 10
+# endif 
 
 char	*get_next_line(int fd);
 int		ft_strlen(const char *str);

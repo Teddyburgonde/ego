@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teddybandama <teddybandama@student.42.f    +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 14:35:08 by teddybandam       #+#    #+#             */
-/*   Updated: 2024/11/04 00:07:16 by teddybandam      ###   ########.fr       */
+/*   Updated: 2024/11/04 18:31:39 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	}
 	tab[i + j] = '\0';
 	free(s1);
-	s1 = NULL;
 	return (tab);
 }
 

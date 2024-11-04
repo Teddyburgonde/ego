@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: teddybandama <teddybandama@student.42.f    +#+  +:+       +#+        */
+/*   By: tebandam <tebandam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/03 14:22:37 by teddybandam       #+#    #+#             */
-/*   Updated: 2024/11/04 00:06:37 by teddybandam      ###   ########.fr       */
+/*   Updated: 2024/11/04 19:00:49 by tebandam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ static char	*read_and_concatenate(int fd, char *stash)
 	char	*buff;
 	int		byte_read;
 
-	byte_read = 1;
-	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buff)
 	{
 		free(stash);
@@ -28,7 +27,6 @@ static char	*read_and_concatenate(int fd, char *stash)
 	if (byte_read < 0)
 	{
 		free(buff);
-		free(stash);
 		return (NULL);
 	}
 	buff[byte_read] = '\0';
@@ -44,6 +42,8 @@ static char	*read_and_concatenate(int fd, char *stash)
 
 static char	*read_line(char *stash, int fd)
 {
+	char	*new_stash;
+
 	if (stash == NULL)
 	{
 		stash = malloc(1);
@@ -53,9 +53,13 @@ static char	*read_line(char *stash, int fd)
 	}
 	while (ft_strchr(stash, '\n') == NULL)
 	{
-		stash = read_and_concatenate(fd, stash);
-		if (!stash)
+		new_stash = read_and_concatenate(fd, stash);
+		if (!new_stash)
+		{
+			free(stash);
 			return (NULL);
+		}
+		stash = new_stash;
 		if (stash[0] == '\0')
 			break ;
 	}
@@ -69,7 +73,7 @@ static char	*extract_line(char *stash)
 	int		line_length;
 
 	i = 0;
-	if (!stash[i])
+	if (!stash || !stash[0])
 		return (NULL);
 	while (stash[i] && stash[i] != '\n')
 		i++;
@@ -92,19 +96,17 @@ static char	*extract_surplus_line(char *stash)
 	i = 0;
 	while (stash[i] && stash[i] != '\n')
 		i++;
-	if (stash[i] != '\n')
+	if (stash[i] == '\n')
+		i++;
+	j = ft_strlen(stash);
+	if (i == j)
+	{
+		free(stash);
 		return (NULL);
-	surplus_line = malloc(sizeof(char) * (ft_strlen(stash) - i + 1));
+	}
+	surplus_line = ft_substr(stash, i, j);
 	if (!surplus_line)
 		return (NULL);
-	i++;
-	while (stash[i])
-	{
-		surplus_line[j] = stash[i];
-		i++;
-		j++;
-	}
-	surplus_line[j] = '\0';
 	free(stash);
 	return (surplus_line);
 }
